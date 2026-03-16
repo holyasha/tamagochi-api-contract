@@ -17,5 +17,6 @@ public record PetRequest(
 
     @Schema(description = "Цвет питомца", example = "Серый", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "Цвет питомца не может быть пустым")
+    @Size(max = 100, message = "Цвет не может превышать 100 символов")
     String color
 ) {}

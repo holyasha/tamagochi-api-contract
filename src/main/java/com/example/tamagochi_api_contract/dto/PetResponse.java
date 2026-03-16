@@ -84,16 +84,16 @@ public class PetResponse extends RepresentationModel<PetResponse> {
     @Schema(description = "Времена последних действий")
     public static class LastActions {
         
-        @Schema(description = "Время последнего кормления")
+        @Schema(description = "Время последнего кормления", example = "2026-03-15 15:00")
         private final LocalDateTime fed;
         
-        @Schema(description = "Время последней игры")
+        @Schema(description = "Время последней игры", example = "2026-03-15 15:00")
         private final LocalDateTime played;
         
-        @Schema(description = "Время последнего сна")
+        @Schema(description = "Время последнего сна", example = "2026-03-15 15:00")
         private final LocalDateTime slept;
         
-        @Schema(description = "Время последней уборки")
+        @Schema(description = "Время последней уборки", example = "2026-03-15 15:00")
         private final LocalDateTime cleaned;
         
     }
