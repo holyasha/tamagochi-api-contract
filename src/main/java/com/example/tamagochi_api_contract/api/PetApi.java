@@ -38,8 +38,8 @@ public interface PetApi {
             security = @SecurityRequirement(name = PetsApiContractConfig.SECURITY_SCHEME_BEARER)
     )
     @ApiResponse(responseCode = "200", description = "Питомец найден")
-    @ApiResponse(responseCode = "404", description = "Питомец не найден")
-            // content = @Content(schema = @Schema(implementation = ErrorResponse.class))) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    @ApiResponse(responseCode = "404", description = "Питомец не найден",
+            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @GetMapping("/{id}")
     EntityModel<PetResponse> getPetById(
             @Parameter(description = "ID питомца", required = true, example = "1") @PathVariable Long id

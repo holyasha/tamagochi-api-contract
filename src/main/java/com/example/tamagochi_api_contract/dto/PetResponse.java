@@ -2,6 +2,8 @@ package com.example.tamagochi_api_contract.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -32,69 +34,24 @@ public class PetResponse extends RepresentationModel<PetResponse> {
     @Schema(description = "Цвет питомца", example = "Серый")
     private final String color;
 
-     @Schema(description = "Текущий уровень", example = "5")
-    private final Integer level;
-
-    @Schema(description = "Текущий опыт", example = "250")
-    private final Integer experience;
-
     @Schema(description = "Статус жизни питомца", example = "true")
     private final Boolean isAlive;
 
+    @Schema(description = "Голод питомца", example = "50")
+    @Min(0)
+    @Max(100)
+    private final Integer hunger;
+
+    @Schema(description = "Счастье питомца", example = "50")
+    @Min(0)
+    @Max(100)
+    private final Integer happiness;
+
+    @Schema(description = "Чистота питомца", example = "50")
+    @Min(0)
+    @Max(100)
+    private final Integer clearliness;
+
     @Schema(description = "Дата рождения питомца", example = "2026-03-15")
     private final LocalDateTime birthDate;
-
-    @Schema(description = "Текущие характеристики питомца")
-    private final PetStatus petStatus;
-
-    @Schema(description = "Временные метки последних действий")
-    private final LastActions lastActions;
-
-    @Getter
-    @Builder
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @Schema(description = "Текущее состояние питомца")
-    public static class PetStatus {
-        
-        @Schema(description = "Сытость (0-100)", example = "45")
-        private final Integer hunger;
-        
-        @Schema(description = "Счастье (0-100)", example = "80")
-        private final Integer happiness;
-        
-        @Schema(description = "Энергия (0-100)", example = "30")
-        private final Integer energy;
-        
-        @Schema(description = "Здоровье (0-100)", example = "95")
-        private final Integer health;
-        
-        @Schema(description = "Чистота (0-100)", example = "60")
-        private final Integer cleanliness;
-        
-        @Schema(description = "Общее состояние", example = "Хорошо")
-        private final String status;
-        
-        @Schema(description = "Сообщения о состоянии", example = "[\"Чупеп голоден!\", \"Чупеп хочет спать\"]")
-        private final Set<String> statusMessages;
-    }
-
-    @Getter
-    @Builder
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @Schema(description = "Времена последних действий")
-    public static class LastActions {
-        
-        @Schema(description = "Время последнего кормления", example = "2026-03-15 15:00")
-        private final LocalDateTime fed;
-        
-        @Schema(description = "Время последней игры", example = "2026-03-15 15:00")
-        private final LocalDateTime played;
-        
-        @Schema(description = "Время последнего сна", example = "2026-03-15 15:00")
-        private final LocalDateTime slept;
-        
-        @Schema(description = "Время последней уборки", example = "2026-03-15 15:00")
-        private final LocalDateTime cleaned;
-        
-    }
 }
