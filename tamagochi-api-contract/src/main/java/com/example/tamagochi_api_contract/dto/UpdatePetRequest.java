@@ -1,6 +1,9 @@
 package com.example.tamagochi_api_contract.dto;
 
+import java.time.LocalDate;
+
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
@@ -18,5 +21,9 @@ public record UpdatePetRequest(
 
     @Schema(description = "Новый цвет питомца", example = "Серый", requiredMode = Schema.RequiredMode.REQUIRED)
     @Size(max = 100, message = "Цвет не может превышать 100 символов")
-    String color
+    String color,
+
+    @Schema(description = "Дата рождения питомца", example = "2000-04-18", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Past(message = "Дата рождения должна быть в прошлом")
+    LocalDate birthDate
 ) {}

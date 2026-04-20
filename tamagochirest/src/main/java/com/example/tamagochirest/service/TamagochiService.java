@@ -89,6 +89,7 @@ public class TamagochiService {
             .energy(100)
             .clearliness(100)
             .isAlive(true)
+            .birthDate(request.birthDate())
             .createdAt(LocalDateTime.now())
             .build();
         storage.pets.put(id, pet);
@@ -103,6 +104,7 @@ public class TamagochiService {
             .species(request.species())
             .color(request.color())
             .owner(existing.getOwner())
+            .birthDate(request.birthDate())
             .happiness(existing.getHappiness())
             .health(existing.getHealth())
             .hunger(existing.getHunger())
@@ -124,6 +126,7 @@ public class TamagochiService {
             .species(request.species() != null ? request.species() : existing.getSpecies())
             .color(request.color() != null ? request.color() : existing.getColor())
             .owner(existing.getOwner())
+            .birthDate(request.birthDate() != null ? request.birthDate() : existing.getBirthDate())
             .happiness(existing.getHappiness())
             .health(existing.getHealth())
             .hunger(existing.getHunger())

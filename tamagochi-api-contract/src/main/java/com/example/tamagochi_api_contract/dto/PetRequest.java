@@ -1,5 +1,7 @@
 package com.example.tamagochi_api_contract.dto;
 
+import java.time.LocalDate;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 
@@ -22,5 +24,9 @@ public record PetRequest(
 
     @Schema(description = "ID владельца", example = "1", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "ID владельца не может быть пустым")
-    Long ownerId
+    Long ownerId,
+
+    @Schema(description = "Дата рождения питомца", example = "2026-04-18", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Past(message = "Дата рождения должна быть в прошлом")
+    LocalDate birthDate
 ) {}
