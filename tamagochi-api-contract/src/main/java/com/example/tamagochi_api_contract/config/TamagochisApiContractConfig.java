@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.servers.Server;
 
 /**
- * Центральная OpenAPI-конфигурация контракта Books API.
+ * Центральная OpenAPI-конфигурация контракта Tamagochis API.
  *
  * Это не Spring-бин — здесь нет @Component или @Configuration.
  * Библиотека springdoc-openapi сканирует classpath и автоматически подхватывает
@@ -18,7 +18,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
  */
 @OpenAPIDefinition(
         info = @Info(
-                title = "Pets API",
+                title = "Tamagochis API",
                 version = "1.0.0",
                 description = """
                         REST API для управления питомцами.
@@ -28,21 +28,21 @@ import io.swagger.v3.oas.annotations.servers.Server;
                 @Server(url = "http://localhost:8080", description = "Local development")
         })
 @SecurityScheme(
-        name = PetsApiContractConfig.SECURITY_SCHEME_BEARER,
+        name = TamagochisApiContractConfig.SECURITY_SCHEME_BEARER,
         type = SecuritySchemeType.HTTP,
         scheme = "bearer",
         bearerFormat = "JWT",
         in = SecuritySchemeIn.HEADER,
         description = "JWT Bearer token. Пример: `Authorization: Bearer eyJhbGci...`"
 )
-public final class PetsApiContractConfig {
+public final class TamagochisApiContractConfig {
 
     /**
      * Имя схемы безопасности. Используется в аннотациях @SecurityRequirement на методах API.
      */
     public static final String SECURITY_SCHEME_BEARER = "bearerAuth";
 
-    private PetsApiContractConfig() {
+    private TamagochisApiContractConfig() {
         // utility class
     }
 }

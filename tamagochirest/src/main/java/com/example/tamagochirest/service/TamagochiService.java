@@ -1,5 +1,6 @@
 package com.example.tamagochirest.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -9,10 +10,10 @@ import org.springframework.stereotype.Component;
 
 import com.example.tamagochi_api_contract.dto.OwnerResponse;
 import com.example.tamagochi_api_contract.dto.PagedResponse;
-import com.example.tamagochi_api_contract.dto.PatchPetRequest;
-import com.example.tamagochi_api_contract.dto.PetRequest;
-import com.example.tamagochi_api_contract.dto.PetResponse;
-import com.example.tamagochi_api_contract.dto.UpdatePetRequest;
+import com.example.tamagochi_api_contract.dto.PatchTamagochiRequest;
+import com.example.tamagochi_api_contract.dto.TamagochiRequest;
+import com.example.tamagochi_api_contract.dto.TamagochiResponse;
+import com.example.tamagochi_api_contract.dto.UpdateTamagochiRequest;
 import com.example.tamagochi_api_contract.exeption.ResourceNotFoundException;
 import com.example.tamagochirest.storage.InMemoryStorage;
 
@@ -27,19 +28,20 @@ public class TamagochiService {
         this.ownerService = ownerService;
     }
 
-    public PetResponse findPetById(Long id) {
-        return Optional.ofNullable(storage.pets.get(id))
-                .orElseThrow(() -> new ResourceNotFoundException("Pet", id));
+    public TamagochiResponse findTamagochiById(Long id) {
+        return Optional.ofNullable(storage.tamagochis.get(id))
+                .orElseThrow(() -> new ResourceNotFoundException("Tamagochi", id));
     }
 
-    public PagedResponse<PetResponse> findAllPets(Long ownerId,
+    public PagedResponse<TamagochiResponse> findAllTamagochis(Long ownerId,
                                               String species,
-                                              Boolean isAlive,
+                                              String color,
                                               String nameSearch,
+                                              LocalDate birthDate,
                                               int page,
                                               int size) {
 
-        Stream<PetResponse> stream = storage.pets.values().stream()
+        Stream<TamagochiResponse> stream = storage.tamagochis.values().stream()
             .sorted((p1, p2) -> p1.getId().compareTo(p2.getId()));
         if (ownerId != null) {
             stream = stream.filter(p ->
@@ -52,9 +54,14 @@ public class TamagochiService {
                 species.equalsIgnoreCase(p.getSpecies())
                 );
         }
-        if (isAlive != null) {
+        if (color != null && !color.isBlank()) {
             stream = stream.filter(p ->
-                isAlive.equals(p.getIsAlive())
+                color.equalsIgnoreCase(p.getColor())
+                );
+        }
+        if (birthDate != null) {
+            stream = stream.filter(p ->
+                birthDate.equals(p.getBirthDate())
             );
         }
         if (nameSearch != null && !nameSearch.isBlank()) {
@@ -64,20 +71,20 @@ public class TamagochiService {
                 p.getName().toLowerCase().contains(q)
             );
         }
-        List<PetResponse> allPets = stream.toList();
-        int totalElements = allPets.size();
+        List<TamagochiResponse> allTamagochis = stream.toList();
+        int totalElements = allTamagochis.size();
         int totalPages = size > 0 ? (int) Math.ceil((double) totalElements / size) : 1;
         int from = page * size;
         int to = Math.min(from + size, totalElements);
-        List<PetResponse> content = (from >= totalElements) ? List.of() : allPets.subList(from, to);
+        List<TamagochiResponse> content = (from >= totalElements) ? List.of() : allTamagochis.subList(from, to);
         return new PagedResponse<>(content, page, size, totalElements, totalPages, page >= totalPages - 1);
     }
 
-    public PetResponse createPet(PetRequest request) {
+    public TamagochiResponse createTamagochi(TamagochiRequest request) {
         OwnerResponse owner = ownerService.findById(request.ownerId());
 
-        long id = storage.petSequence.incrementAndGet();
-        PetResponse pet = PetResponse.builder()
+        long id = storage.tamagochiSequence.incrementAndGet();
+        TamagochiResponse tamagochi = TamagochiResponse.builder()
             .id(id)
             .name(request.name())
             .species(request.species())
@@ -92,13 +99,13 @@ public class TamagochiService {
             .birthDate(request.birthDate())
             .createdAt(LocalDateTime.now())
             .build();
-        storage.pets.put(id, pet);
-        return pet;
+        storage.tamagochis.put(id, tamagochi);
+        return tamagochi;
     }
 
-    public PetResponse updaPet(Long id, UpdatePetRequest request) {
-        PetResponse existing = findPetById(id);
-        PetResponse updated = PetResponse.builder()
+    public TamagochiResponse updaTamagochi(Long id, UpdateTamagochiRequest request) {
+        TamagochiResponse existing = findTamagochiById(id);
+        TamagochiResponse updated = TamagochiResponse.builder()
             .id(id)
             .name(request.name())
             .species(request.species())
@@ -114,13 +121,13 @@ public class TamagochiService {
             .createdAt(existing.getCreatedAt())
             .updatedAt(LocalDateTime.now())
             .build();
-        storage.pets.put(id, updated);
+        storage.tamagochis.put(id, updated);
         return updated;
     }
 
-    public PetResponse patcPet(Long id, PatchPetRequest request) {
-        PetResponse existing = findPetById(id);
-        PetResponse updated = PetResponse.builder()
+    public TamagochiResponse patcTamagochi(Long id, PatchTamagochiRequest request) {
+        TamagochiResponse existing = findTamagochiById(id);
+        TamagochiResponse updated = TamagochiResponse.builder()
             .id(id)
             .name(request.name() != null ? request.name() : existing.getName())
             .species(request.species() != null ? request.species() : existing.getSpecies())
@@ -136,20 +143,20 @@ public class TamagochiService {
             .createdAt(existing.getCreatedAt())
             .updatedAt(LocalDateTime.now())
             .build();
-        storage.pets.put(id, updated);
+        storage.tamagochis.put(id, updated);
         return updated;
     }
 
-    public void deletePet(Long id) {
-        findPetById(id);
-        storage.pets.remove(id);
+    public void deleteTamagochi(Long id) {
+        findTamagochiById(id);
+        storage.tamagochis.remove(id);
     }
 
-    public void deletePetsByOwnerId(Long ownerId) {
-        List<Long> toDelete = storage.pets.values().stream()
+    public void deleteTamagochisByOwnerId(Long ownerId) {
+        List<Long> toDelete = storage.tamagochis.values().stream()
                 .filter(b -> b.getOwner() != null && b.getOwner().getId().equals(ownerId))
-                .map(PetResponse::getId)
+                .map(TamagochiResponse::getId)
                 .toList();
-        toDelete.forEach(storage.pets::remove);
+        toDelete.forEach(storage.tamagochis::remove);
     }
 }

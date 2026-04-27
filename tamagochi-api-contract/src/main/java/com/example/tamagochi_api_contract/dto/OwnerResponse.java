@@ -12,7 +12,7 @@ import java.time.LocalDate;
 
 @Getter
 @Builder
-    @EqualsAndHashCode(callSuper = false) // не включаем HATEOAS-ссылки в сравнение equals
+@EqualsAndHashCode(callSuper = false) // не включаем HATEOAS-ссылки в сравнение equals
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Relation(collectionRelation = "owners", itemRelation = "owner")
 @Schema(description = "Информация о пользователе")
@@ -28,5 +28,5 @@ public class OwnerResponse extends RepresentationModel<OwnerResponse> {
     private final LocalDate birthDate;
 
     @Schema(description = "Общее количество питомцев у пользователя", example = "3")
-    private final Integer petsCount;
+    private final Integer tamagochisCount;
 }

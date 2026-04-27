@@ -8,17 +8,17 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.stereotype.Component;
 
 import com.example.tamagochi_api_contract.dto.OwnerResponse;
-import com.example.tamagochi_api_contract.dto.PetResponse;
+import com.example.tamagochi_api_contract.dto.TamagochiResponse;
 
 import jakarta.annotation.PostConstruct;
 
 @Component
 public class InMemoryStorage {
     public final Map<Long, OwnerResponse> owners = new ConcurrentHashMap<>();
-    public final Map<Long, PetResponse> pets = new ConcurrentHashMap<>();
+    public final Map<Long, TamagochiResponse> tamagochis = new ConcurrentHashMap<>();
 
     public final AtomicLong ownerSequence = new AtomicLong(0);
-    public final AtomicLong petSequence = new AtomicLong(0);
+    public final AtomicLong tamagochiSequence = new AtomicLong(0);
 
     @PostConstruct
     public void init() {
@@ -26,22 +26,22 @@ public class InMemoryStorage {
         .id(ownerSequence.incrementAndGet())
         .name("John")
         .birthDate(LocalDate.of(1999, 5, 12))
-        .petsCount(1)
+        .tamagochisCount(1)
         .build();
 
         OwnerResponse owner2 = OwnerResponse.builder()
         .id(ownerSequence.incrementAndGet())
         .name("Piter")
         .birthDate(LocalDate.of(2000, 11, 11))
-        .petsCount(2)
+        .tamagochisCount(2)
         .build();
 
         owners.put(owner1.getId(), owner1);
         owners.put(owner2.getId(), owner2);
 
-        long petId1 = petSequence.incrementAndGet();
-        pets.put(petId1, PetResponse.builder()
-        .id(petId1)
+        long tamagochiId1 = tamagochiSequence.incrementAndGet();
+        tamagochis.put(tamagochiId1, TamagochiResponse.builder()
+        .id(tamagochiId1)
         .name("Чупеп")
         .species("Кошка")
         .color("Синий")
@@ -51,12 +51,13 @@ public class InMemoryStorage {
         .happiness(90)
         .clearliness(80)
         .birthDate(LocalDate.of(2026, 10, 11))
+        .owner(owner1)
         .build()
         );
 
-        long petId2 = petSequence.incrementAndGet();
-        pets.put(petId2, PetResponse.builder()
-        .id(petId1)
+        long tamagochiId2 = tamagochiSequence.incrementAndGet();
+        tamagochis.put(tamagochiId2, TamagochiResponse.builder()
+        .id(tamagochiId1)
         .name("Пупа")
         .species("Собака")
         .color("Черный")
@@ -70,9 +71,9 @@ public class InMemoryStorage {
         .build()
         );
 
-        long petId3 = petSequence.incrementAndGet();
-        pets.put(petId3, PetResponse.builder()
-        .id(petId1)
+        long tamagochiId3 = tamagochiSequence.incrementAndGet();
+        tamagochis.put(tamagochiId3, TamagochiResponse.builder()
+        .id(tamagochiId1)
         .name("Лупа")
         .species("Собака")
         .color("Белый")

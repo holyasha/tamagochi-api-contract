@@ -18,9 +18,9 @@ import org.springframework.hateoas.server.core.Relation;
 @Builder
 @EqualsAndHashCode(callSuper = false)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Relation(collectionRelation = "pets", itemRelation = "pet")
+@Relation(collectionRelation = "tamagochis", itemRelation = "tamagochi")
 @Schema(description = "Информация о питомце")
-public class PetResponse extends RepresentationModel<PetResponse> {
+public class TamagochiResponse extends RepresentationModel<TamagochiResponse> {
 
     @Schema(description = "Уникальный идентификатор питомца", example = "1")
     private final Long id;

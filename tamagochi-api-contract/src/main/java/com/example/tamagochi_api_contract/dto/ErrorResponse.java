@@ -29,10 +29,10 @@ public record ErrorResponse(
         @Schema(description = "Краткое человекочитаемое название типа ошибки", example = "Ресурс не найден")
         String title,
 
-        @Schema(description = "Детальное описание конкретного случая ошибки", example = "Книга с id=42 не существует")
+        @Schema(description = "Детальное описание конкретного случая ошибки", example = "Питомец с id=42 не существует")
         String detail,
 
-        @Schema(description = "URI запроса, приведшего к ошибке", example = "/api/books/42")
+        @Schema(description = "URI запроса, приведшего к ошибке", example = "/api/tamagochis/42")
         String instance,
 
         @Schema(description = "Момент возникновения ошибки (UTC)", example = "2026-03-03T10:15:30Z")

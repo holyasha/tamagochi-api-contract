@@ -19,7 +19,7 @@ public class OwnerModelAssembler implements RepresentationModelAssembler<OwnerRe
         return EntityModel.of(owner,
                 linkTo(methodOn(OwnerContoller.class).getOwnerById(owner.getId())).withSelfRel(),
                 linkTo(methodOn(OwnerContoller.class).getAllOwners(0, 20)).withRel("collection"),
-                linkTo(methodOn(TamagochiController.class).getAllPets(owner.getId(), null, null, null, 0, 20)).withRel("pets")
+                linkTo(methodOn(TamagochiController.class).getAllTamagochis(owner.getId(), null, null, null, null, 0, 20)).withRel("tamagochis")
         );
     }
 }

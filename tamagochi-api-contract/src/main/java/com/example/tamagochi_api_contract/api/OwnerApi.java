@@ -15,12 +15,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.tamagochi_api_contract.config.PetsApiContractConfig;
+import com.example.tamagochi_api_contract.config.TamagochisApiContractConfig;
 import com.example.tamagochi_api_contract.dto.ErrorResponse;
 import com.example.tamagochi_api_contract.dto.OwnerRequest;
 import com.example.tamagochi_api_contract.dto.OwnerResponse;
 import com.example.tamagochi_api_contract.dto.PatchOwnerRequest;
-import com.example.tamagochi_api_contract.dto.PetResponse;
+import com.example.tamagochi_api_contract.dto.TamagochiResponse;
 
 /**
  * Контракт API для управления пользователями.
@@ -37,7 +37,7 @@ public interface OwnerApi {
             summary = "Список владельцев",
             description = "Возвращает постраничный список владельцев с HATEOAS-ссылками. "
                     + "Ссылки prev/next позволяют клиенту навигировать по страницам без знания офсетов.",
-            security = @SecurityRequirement(name = PetsApiContractConfig.SECURITY_SCHEME_BEARER)
+            security = @SecurityRequirement(name = TamagochisApiContractConfig.SECURITY_SCHEME_BEARER)
     )
     @ApiResponse(responseCode = "200", description = "Список владельцев")
     @GetMapping
@@ -50,7 +50,7 @@ public interface OwnerApi {
 
     @Operation(
             summary = "Получить владельца по ID",
-            security = @SecurityRequirement(name = PetsApiContractConfig.SECURITY_SCHEME_BEARER)
+            security = @SecurityRequirement(name = TamagochisApiContractConfig.SECURITY_SCHEME_BEARER)
     )
     @ApiResponse(responseCode = "200", description = "Пользователь найден")
     @ApiResponse(responseCode = "404", description = "Пользователь не найден",
@@ -62,7 +62,7 @@ public interface OwnerApi {
 
     @Operation(
             summary = "Создать владельца",
-            security = @SecurityRequirement(name = PetsApiContractConfig.SECURITY_SCHEME_BEARER)
+            security = @SecurityRequirement(name = TamagochisApiContractConfig.SECURITY_SCHEME_BEARER)
     )
     @ApiResponse(responseCode = "201", description = "Пользователь создан. Location header содержит URI нового ресурса.")
     @ApiResponse(responseCode = "400", description = "Ошибка валидации",
@@ -74,7 +74,7 @@ public interface OwnerApi {
     @Operation(
             summary = "Полное обновление владельца (PUT)",
             description = "Заменяет все поля владельца. Для обновления отдельных полей используйте PATCH.",
-            security = @SecurityRequirement(name = PetsApiContractConfig.SECURITY_SCHEME_BEARER)
+            security = @SecurityRequirement(name = TamagochisApiContractConfig.SECURITY_SCHEME_BEARER)
     )
     @ApiResponse(responseCode = "200", description = "Владелец обновлён")
     @ApiResponse(responseCode = "400", description = "Ошибка валидации",
@@ -93,7 +93,7 @@ public interface OwnerApi {
                     Обновляет только переданные поля (семантика JSON Merge Patch, RFC 7396).
                     Непереданные поля остаются без изменений.
                     """,
-            security = @SecurityRequirement(name = PetsApiContractConfig.SECURITY_SCHEME_BEARER)
+            security = @SecurityRequirement(name = TamagochisApiContractConfig.SECURITY_SCHEME_BEARER)
     )
     @ApiResponse(responseCode = "200", description = "Владелец обновлён")
     @ApiResponse(responseCode = "400", description = "Ошибка валидации",
@@ -109,7 +109,7 @@ public interface OwnerApi {
     @Operation(
             summary = "Удалить владельца",
             description = "Удаляет владельца и всех его питомцев(каскадное удаление).",
-            security = @SecurityRequirement(name = PetsApiContractConfig.SECURITY_SCHEME_BEARER)
+            security = @SecurityRequirement(name = TamagochisApiContractConfig.SECURITY_SCHEME_BEARER)
     )
     @ApiResponse(responseCode = "204", description = "Пользователь удалён")
     @ApiResponse(responseCode = "404", description = "Пользователь не найден",
@@ -124,16 +124,16 @@ public interface OwnerApi {
             summary = "Питомцы пользователя (суб-ресурс)",
             description = """
                     Возвращает постраничный список питомцев указанного пользователя.
-                    Это суб-ресурс (концепция REST): /owners/{id}/pets.
-                    Эквивалентен GET /books?authorId={id}, но точнее отражает иерархию.
+                    Это суб-ресурс (концепция REST): /owners/{id}/tamagochis.
+                    Эквивалентен GET /tamagochis?ownerId={id}, но точнее отражает иерархию.
                     """,
-            security = @SecurityRequirement(name = PetsApiContractConfig.SECURITY_SCHEME_BEARER)
+            security = @SecurityRequirement(name = TamagochisApiContractConfig.SECURITY_SCHEME_BEARER)
     )
     @ApiResponse(responseCode = "200", description = "Список питомцев пользователя")
     @ApiResponse(responseCode = "404", description = "Пользователь не найден",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @GetMapping("/{id}/pets")
-    PagedModel<EntityModel<PetResponse>> getPetsByOwner(
+    @GetMapping("/{id}/tamagochis")
+    PagedModel<EntityModel<TamagochiResponse>> getTamagochisByOwner(
             @Parameter(description = "ID владельца", required = true, example = "1") @PathVariable Long id,
             @Parameter(description = "Номер страницы (0..N)", example = "0") @RequestParam(defaultValue = "0") int page,
             @Parameter(description = "Размер страницы", example = "20") @RequestParam(defaultValue = "20") int size

@@ -14,7 +14,7 @@ import com.example.tamagochi_api_contract.dto.OwnerRequest;
 import com.example.tamagochi_api_contract.dto.OwnerResponse;
 import com.example.tamagochi_api_contract.dto.PagedResponse;
 import com.example.tamagochi_api_contract.dto.PatchOwnerRequest;
-import com.example.tamagochi_api_contract.dto.PetResponse;
+import com.example.tamagochi_api_contract.dto.TamagochiResponse;
 import com.example.tamagochirest.assemblers.OwnerModelAssembler;
 import com.example.tamagochirest.assemblers.TamagochiModelAssembler;
 import com.example.tamagochirest.service.OwnerService;
@@ -28,11 +28,11 @@ public class OwnerContoller implements OwnerApi {
     private final OwnerModelAssembler ownerModelAssembler;
     private final TamagochiModelAssembler tamagochiModelAssembler;
     private final PagedResourcesAssembler<OwnerResponse> pagedOwnersAssembler;
-    private final PagedResourcesAssembler<PetResponse> pagedTamagochisAssembler;
+    private final PagedResourcesAssembler<TamagochiResponse> pagedTamagochisAssembler;
     public OwnerContoller(OwnerService ownerService, TamagochiService tamagotchiService,
             OwnerModelAssembler ownerModelAssembler, TamagochiModelAssembler tamagochiModelAssembler,
             PagedResourcesAssembler<OwnerResponse> pagedOwnersAssembler,
-            PagedResourcesAssembler<PetResponse> pagedTamagochisAssembler) {
+            PagedResourcesAssembler<TamagochiResponse> pagedTamagochisAssembler) {
         this.ownerService = ownerService;
         this.tamagotchiService = tamagotchiService;
         this.ownerModelAssembler = ownerModelAssembler;
@@ -82,11 +82,11 @@ public class OwnerContoller implements OwnerApi {
     }
     
     @Override
-    public PagedModel<EntityModel<PetResponse>> getPetsByOwner(Long id, int page, int size) {
+    public PagedModel<EntityModel<TamagochiResponse>> getTamagochisByOwner(Long id, int page, int size) {
         // Проверяем что владелец существует (выбросит 404 если нет)
         ownerService.findById(id);
-        PagedResponse<PetResponse> paged = tamagotchiService.findAllPets(id, null, null, null, page, size);
-        Page<PetResponse> springPage = new PageImpl<>(
+        PagedResponse<TamagochiResponse> paged = tamagotchiService.findAllTamagochis(id, null, null, null, null, page, size);
+        Page<TamagochiResponse> springPage = new PageImpl<>(
             paged.content(),
             PageRequest.of(paged.pageNumber(), paged.pageSize()),
             paged.totalElements()

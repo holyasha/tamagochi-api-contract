@@ -9,14 +9,14 @@
         .\mvnw install
 
         # Запустить demo-rest - контракт соберётся автоматически
-        .\mvnw spring-boot:run -pl demo-rest -am
+        .\mvnw spring-boot:run -pl tamagochi-rest -am
 
         # Собрать только контракт (если менял только его)
-        .\mvnw install -pl books-api-contract
+        .\mvnw install -pl tamagochi-api-contract
     -->
 
     <groupId>com.example.tamagochi</groupId>
-    <artifactId>tamagochi-root</artifactId>
+    <artifactId>tamagochi-rest-root</artifactId>
     <version>1.0</version>
     <packaging>pom</packaging>
     <name>tamagochi-rest [root aggregator]</name>

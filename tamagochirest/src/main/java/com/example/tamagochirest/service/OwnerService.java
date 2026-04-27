@@ -47,7 +47,7 @@ public class OwnerService {
             .id(id)
             .name(request.name())
             .birthDate(request.birthDate())
-            .petsCount(0)
+            .tamagochisCount(0)
             .build();
         storage.owners.put(id, owner);
         return owner;
@@ -59,7 +59,7 @@ public class OwnerService {
                 .id(id)
                 .name(request.name())
                 .birthDate(request.birthDate())
-                .petsCount(existing.getPetsCount())
+                .tamagochisCount(existing.getTamagochisCount())
                 .build();
         storage.owners.put(id, updatedOwner);
         return updatedOwner;
@@ -72,7 +72,7 @@ public class OwnerService {
                 .id(id)
                 .name(newName)
                 .birthDate(request.birthDate() != null ? request.birthDate() : existing.getBirthDate())
-                .petsCount(existing.getPetsCount())
+                .tamagochisCount(existing.getTamagochisCount())
                 .build();
         storage.owners.put(id, updated);
         return updated;
@@ -80,7 +80,7 @@ public class OwnerService {
 
     public void delete(Long id) {
         findById(id); // Проверяем, что владелец существует
-        tamagotchiService.deletePetsByOwnerId(id); // Каскадное удаление книг
+        tamagotchiService.deleteTamagochisByOwnerId(id); // Каскадное удаление книг
         storage.owners.remove(id);
     }
 }

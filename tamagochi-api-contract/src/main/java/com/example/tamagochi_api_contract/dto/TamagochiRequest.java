@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 
 @Schema(description = "Запрос на создание или полное обновление питомца")
-public record PetRequest(
+public record TamagochiRequest(
     @Schema(description = "Имя питомца", example = "Чупеп", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "Имя питомца не может быть пустым")
     @Size(max = 100, message = "Имя не может превышать 100 символов")
