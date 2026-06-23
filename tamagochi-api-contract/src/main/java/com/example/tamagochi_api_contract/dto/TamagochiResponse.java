@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
@@ -69,8 +69,8 @@ public class TamagochiResponse extends RepresentationModel<TamagochiResponse> {
     private final OwnerResponse owner;
 
     @Schema(description = "Момент создания питомца")
-    private final LocalDateTime createdAt;
+    private final OffsetDateTime createdAt;
 
     @Schema(description = "Момент последнего обновления питомца")
-    private final LocalDateTime updatedAt;
+    private final OffsetDateTime updatedAt;
 }

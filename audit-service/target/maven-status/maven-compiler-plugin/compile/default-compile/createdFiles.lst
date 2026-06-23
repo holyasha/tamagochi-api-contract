@@ -1,0 +1,6 @@
+com\example\tamagochi\auditservice\storage\AuditStorage.class
+com\example\tamagochi\auditservice\AuditServiceApplication.class
+com\example\tamagochi\auditservice\config\RabbitMQConfig.class
+com\example\tamagochi\auditservice\listener\AuditEventListener.class
+com\example\tamagochi\auditservice\model\AuditEntry.class
+com\example\tamagochi\auditservice\controller\AuditController.class

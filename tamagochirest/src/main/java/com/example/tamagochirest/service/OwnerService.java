@@ -9,6 +9,7 @@ import com.example.tamagochi_api_contract.dto.PagedResponse;
 import com.example.tamagochi_api_contract.dto.PatchOwnerRequest;
 import com.example.tamagochi_api_contract.exeption.ResourceNotFoundException;
 import com.example.tamagochirest.storage.InMemoryStorage;
+import com.example.tamagochirest.event.OwnerEventPublisher;
 
 import java.util.Comparator;
 import java.util.List;
@@ -16,13 +17,17 @@ import java.util.Optional;
 
 @Service
 public class OwnerService {
-   
+
     private final InMemoryStorage storage;
     private final TamagochiService tamagotchiService;
-    
-    public OwnerService(InMemoryStorage storage, @Lazy TamagochiService tamagotchiService) {
+    private final OwnerEventPublisher eventPublisher;
+
+    public OwnerService(InMemoryStorage storage,
+                       @Lazy TamagochiService tamagotchiService,
+                       OwnerEventPublisher eventPublisher) {
         this.storage = storage;
         this.tamagotchiService = tamagotchiService;
+        this.eventPublisher = eventPublisher;
     }
 
     public PagedResponse<OwnerResponse> findAll(int page, int size) {
@@ -50,6 +55,7 @@ public class OwnerService {
             .tamagochisCount(0)
             .build();
         storage.owners.put(id, owner);
+        eventPublisher.publishCreated(owner);
         return owner;
     }
 
@@ -79,8 +85,12 @@ public class OwnerService {
     }
 
     public void delete(Long id) {
-        findById(id); // Проверяем, что владелец существует
-        tamagotchiService.deleteTamagochisByOwnerId(id); // Каскадное удаление книг
+        OwnerResponse owner = findById(id);
+        int deletedTamagochisCount = (int) storage.tamagochis.values().stream()
+                .filter(t -> t.getOwner() != null && t.getOwner().getId().equals(id))
+                .count();
+        tamagotchiService.deleteTamagochisByOwnerId(id);
         storage.owners.remove(id);
+        eventPublisher.publishDeleted(owner, deletedTamagochisCount);
     }
 }

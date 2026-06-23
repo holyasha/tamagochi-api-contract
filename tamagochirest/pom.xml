@@ -107,6 +107,19 @@
             <version>1.0</version>
         </dependency>
 
+        <!-- Spring AMQP — интеграция с RabbitMQ для публикации доменных событий -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+
+        <!-- Контракт доменных событий — общий между publisher и consumer -->
+        <dependency>
+            <groupId>com.example.tamagochi</groupId>
+            <artifactId>tamagochis-events-contract</artifactId>
+            <version>1.0</version>
+        </dependency>
+
     </dependencies>
     <build>
         <extensions>

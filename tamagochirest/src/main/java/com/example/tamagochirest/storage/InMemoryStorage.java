@@ -1,6 +1,7 @@
 package com.example.tamagochirest.storage;
 
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -49,9 +50,11 @@ public class InMemoryStorage {
         .health(100)
         .hunger(90)
         .happiness(90)
+        .energy(100)
         .clearliness(80)
         .birthDate(LocalDate.of(2026, 10, 11))
         .owner(owner1)
+        .createdAt(OffsetDateTime.now())
         .build()
         );
 
@@ -66,8 +69,10 @@ public class InMemoryStorage {
         .hunger(80)
         .happiness(80)
         .clearliness(70)
+        .energy(100)
         .birthDate(LocalDate.of(2025, 6, 15))
         .owner(owner2)
+        .createdAt(OffsetDateTime.now())
         .build()
         );
 
@@ -81,9 +86,11 @@ public class InMemoryStorage {
         .health(100)
         .hunger(80)
         .happiness(80)
+        .energy(100)
         .clearliness(70)
         .birthDate(LocalDate.of(2025, 6, 16))
         .owner(owner2)
+        .createdAt(OffsetDateTime.now())
         .build()
         );
     }

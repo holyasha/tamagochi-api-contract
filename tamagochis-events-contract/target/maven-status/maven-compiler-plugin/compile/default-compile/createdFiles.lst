@@ -1,0 +1,16 @@
+com\example\tamagochi\events\TamagochiEvent.class
+com\example\tamagochi\events\OwnerEvent.class
+com\example\tamagochi\events\TamagochiEvent$Rested.class
+com\example\tamagochi\events\OwnerEvent$Created.class
+com\example\tamagochi\events\TamagochiEvent$Deleted.class
+com\example\tamagochi\events\TamagochiEvent$Healed.class
+com\example\tamagochi\events\OwnerEvent$Deleted.class
+com\example\tamagochi\events\TamagochiEvent$Fed.class
+com\example\tamagochi\events\TamagochiEvent$Enriched.class
+com\example\tamagochi\events\TamagochiEvent$Cleaned.class
+com\example\tamagochi\events\EventMetadata.class
+com\example\tamagochi\events\EventEnvelope.class
+com\example\tamagochi\events\TamagochiEvent$Created.class
+com\example\tamagochi\events\TamagochiEvent$Played.class
+com\example\tamagochi\events\RoutingKeys.class
+com\example\tamagochi\events\TamagochiEvent$Updated.class

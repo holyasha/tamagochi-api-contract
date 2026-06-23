@@ -1,0 +1,5 @@
+C:\SEMSIX\SOP\tamagochi-api-contract\grpc-enrichment-client\src\main\java\com\example\tamagochi\grpcenrichment\config\GrpcClientConfig.java
+C:\SEMSIX\SOP\tamagochi-api-contract\grpc-enrichment-client\src\main\java\com\example\tamagochi\grpcenrichment\config\RabbitMQConfig.java
+C:\SEMSIX\SOP\tamagochi-api-contract\grpc-enrichment-client\src\main\java\com\example\tamagochi\grpcenrichment\GrpcEnrichmentClientApplication.java
+C:\SEMSIX\SOP\tamagochi-api-contract\grpc-enrichment-client\src\main\java\com\example\tamagochi\grpcenrichment\listener\TamagochiCreatedListener.java
+C:\SEMSIX\SOP\tamagochi-api-contract\grpc-enrichment-client\src\main\java\com\example\tamagochi\grpcenrichment\publisher\EnrichmentEventPublisher.java

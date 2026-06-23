@@ -1,7 +1,7 @@
 package com.example.tamagochirest.service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -16,16 +16,21 @@ import com.example.tamagochi_api_contract.dto.TamagochiResponse;
 import com.example.tamagochi_api_contract.dto.UpdateTamagochiRequest;
 import com.example.tamagochi_api_contract.exeption.ResourceNotFoundException;
 import com.example.tamagochirest.storage.InMemoryStorage;
+import com.example.tamagochirest.event.TamagochiEventPublisher;
 
 @Component
 public class TamagochiService {
 
     private final InMemoryStorage storage;
     private final OwnerService ownerService;
+    private final TamagochiEventPublisher eventPublisher;
 
-    public TamagochiService(InMemoryStorage storage, OwnerService ownerService) {
+    public TamagochiService(InMemoryStorage storage,
+                           OwnerService ownerService,
+                           TamagochiEventPublisher eventPublisher) {
         this.storage = storage;
         this.ownerService = ownerService;
+        this.eventPublisher = eventPublisher;
     }
 
     public TamagochiResponse findTamagochiById(Long id) {
@@ -97,9 +102,14 @@ public class TamagochiService {
             .clearliness(100)
             .isAlive(true)
             .birthDate(request.birthDate())
-            .createdAt(LocalDateTime.now())
+            .createdAt(OffsetDateTime.now())
             .build();
         storage.tamagochis.put(id, tamagochi);
+
+        // Публикуем доменное событие ПОСЛЕ успешного сохранения.
+        // Если RabbitMQ недоступен — тамагочи всё равно создан, событие просто потеряется.
+        eventPublisher.publishCreated(tamagochi);
+
         return tamagochi;
     }
 
@@ -119,9 +129,10 @@ public class TamagochiService {
             .clearliness(existing.getClearliness())
             .isAlive(existing.getIsAlive())
             .createdAt(existing.getCreatedAt())
-            .updatedAt(LocalDateTime.now())
+            .updatedAt(OffsetDateTime.now())
             .build();
         storage.tamagochis.put(id, updated);
+        eventPublisher.publishUpdated(updated);
         return updated;
     }
 
@@ -141,15 +152,17 @@ public class TamagochiService {
             .clearliness(existing.getClearliness())
             .isAlive(existing.getIsAlive())
             .createdAt(existing.getCreatedAt())
-            .updatedAt(LocalDateTime.now())
+            .updatedAt(OffsetDateTime.now())
             .build();
         storage.tamagochis.put(id, updated);
+        eventPublisher.publishUpdated(updated);
         return updated;
     }
 
     public void deleteTamagochi(Long id) {
-        findTamagochiById(id);
+        TamagochiResponse tamagochi = findTamagochiById(id);
         storage.tamagochis.remove(id);
+        eventPublisher.publishDeleted(id, tamagochi.getName(), "Удалён владельцем");
     }
 
     public void deleteTamagochisByOwnerId(Long ownerId) {

@@ -12,7 +12,7 @@ import graphql.schema.idl.RuntimeWiring;
  * String, Int, Float, Boolean, ID. Для дат и времени нужно регистрировать
  * дополнительные скаляры из библиотеки graphql-java-extended-scalars.
  *
- * DateTime маппится на java.time.OffsetDateTime / LocalDateTime.
+ * DateTime маппится на java.time.OffsetDateTime / OffsetDateTime.
  * Date маппится на java.time.LocalDate.
  *
  * Аннотация @DgsRuntimeWiring позволяет программно настроить runtime wiring —

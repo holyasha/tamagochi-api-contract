@@ -1,0 +1,6 @@
+C:\SEMSIX\SOP\tamagochi-api-contract\audit-service\src\main\java\com\example\tamagochi\auditservice\AuditServiceApplication.java
+C:\SEMSIX\SOP\tamagochi-api-contract\audit-service\src\main\java\com\example\tamagochi\auditservice\config\RabbitMQConfig.java
+C:\SEMSIX\SOP\tamagochi-api-contract\audit-service\src\main\java\com\example\tamagochi\auditservice\controller\AuditController.java
+C:\SEMSIX\SOP\tamagochi-api-contract\audit-service\src\main\java\com\example\tamagochi\auditservice\listener\AuditEventListener.java
+C:\SEMSIX\SOP\tamagochi-api-contract\audit-service\src\main\java\com\example\tamagochi\auditservice\model\AuditEntry.java
+C:\SEMSIX\SOP\tamagochi-api-contract\audit-service\src\main\java\com\example\tamagochi\auditservice\storage\AuditStorage.java
