@@ -3,6 +3,7 @@ package com.example.tamagochi_api_contract.dto;
 import java.time.LocalDate;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 
@@ -14,10 +15,21 @@ public record PatchOwnerRequest(
     @Size(max = 100, message = "Имя не может превышать 100 символов")
     String name,
 
+    @Schema(description = "Новый игровой ник владельца", example = "DragonSlayer2001")
+    @Size(max = 50, message = "Ник не может превышать 50 символов")
+    String nickname,
+
+    @Schema(description = "Новый email владельца", example = "newemail@example.com")
+    @Email(message = "Некорректный формат email")
+    @Size(max = 255, message = "Email не может превышать 255 символов")
+    String email,
+
     @Schema(description = "Новая дата рождения владельца", example = "1828-09-09")
     @Past(message = "Дата рождения должна быть в прошлом")
-    LocalDate birthDate
+    LocalDate birthDate,
 
+    @Schema(description = "Активность владельца", example = "true")
+    Boolean isActive
 
 ) {}
 

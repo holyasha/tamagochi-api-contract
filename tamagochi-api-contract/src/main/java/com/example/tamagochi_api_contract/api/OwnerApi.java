@@ -36,12 +36,19 @@ public interface OwnerApi {
     @Operation(
             summary = "Список владельцев",
             description = "Возвращает постраничный список владельцев с HATEOAS-ссылками. "
-                    + "Ссылки prev/next позволяют клиенту навигировать по страницам без знания офсетов.",
+                    + "Ссылки prev/next позволяют клиенту навигировать по страницам без знания офсетов. "
+                    + "Поддерживает поиск по имени и email.",
             security = @SecurityRequirement(name = TamagochisApiContractConfig.SECURITY_SCHEME_BEARER)
     )
     @ApiResponse(responseCode = "200", description = "Список владельцев")
     @GetMapping
     PagedModel<EntityModel<OwnerResponse>> getAllOwners(
+            @Parameter(description = "Поиск по имени (substring, case-insensitive)", example = "Иван")
+            @RequestParam(required = false) String nameSearch,
+            @Parameter(description = "Поиск по email (substring, case-insensitive)", example = "example@mail.com")
+            @RequestParam(required = false) String emailSearch,
+            @Parameter(description = "Фильтр по активности (true - активные, false - неактивные, null - все)", example = "true")
+            @RequestParam(required = false) Boolean isActive,
             @Parameter(description = "Номер страницы (0..N)", example = "0")
             @RequestParam(defaultValue = "0") int page,
             @Parameter(description = "Размер страницы", example = "20")
@@ -137,6 +144,26 @@ public interface OwnerApi {
             @Parameter(description = "ID владельца", required = true, example = "1") @PathVariable Long id,
             @Parameter(description = "Номер страницы (0..N)", example = "0") @RequestParam(defaultValue = "0") int page,
             @Parameter(description = "Размер страницы", example = "20") @RequestParam(defaultValue = "20") int size
+    );
+
+    @Operation(
+            summary = "Поиск владельцев",
+            description = "Поиск владельцев по различным критериям с поддержкой пагинации",
+            security = @SecurityRequirement(name = TamagochisApiContractConfig.SECURITY_SCHEME_BEARER)
+    )
+    @ApiResponse(responseCode = "200", description = "Результаты поиска")
+    @GetMapping("/search")
+    PagedModel<EntityModel<OwnerResponse>> searchOwners(
+            @Parameter(description = "Поиск по имени (substring, case-insensitive)", example = "Иван")
+            @RequestParam(required = false) String name,
+            @Parameter(description = "Поиск по email (substring, case-insensitive)", example = "example@mail.com")
+            @RequestParam(required = false) String email,
+            @Parameter(description = "Фильтр по активности (true - активные, false - неактивные, null - все)", example = "true")
+            @RequestParam(required = false) Boolean isActive,
+            @Parameter(description = "Номер страницы (0..N)", example = "0")
+            @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Размер страницы", example = "20")
+            @RequestParam(defaultValue = "20") int size
     );
 }
 

@@ -37,6 +37,9 @@ public class TamagochiResponse extends RepresentationModel<TamagochiResponse> {
     @Schema(description = "Статус жизни питомца", example = "true")
     private final Boolean isAlive;
 
+    @Schema(description = "Активность питомца", example = "true")
+    private final Boolean isActive;
+
     @Schema(description = "Здоровье питомца", example = "100")
     @Min(0)
     @Max(100)

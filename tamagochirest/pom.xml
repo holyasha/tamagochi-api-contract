@@ -34,20 +34,12 @@
         <protobuf-plugin.version>0.6.1</protobuf-plugin.version>
         <grpc.version>1.66.0</grpc.version>
     </properties>
-   
+
    <dependencyManagement>
         <dependencies>
-            <!-- Netflix DGS — BOM для управления версиями всех GraphQL-зависимостей -->
-            <dependency>
-                <groupId>com.netflix.graphql.dgs</groupId>
-                <artifactId>graphql-dgs-platform-dependencies</artifactId>
-                <version>11.1.0</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
         </dependencies>
     </dependencyManagement>
-    
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -89,34 +81,9 @@
             <artifactId>jakarta.annotation-api</artifactId>
         </dependency>
 
-        <!-- Netflix DGS — стартер для GraphQL на базе Spring for GraphQL -->
-        <dependency>
-            <groupId>com.netflix.graphql.dgs</groupId>
-            <artifactId>graphql-dgs-spring-graphql-starter</artifactId>
-        </dependency>
-
-        <!-- Расширенные скаляры GraphQL (DateTime, Date и другие) -->
-        <dependency>
-            <groupId>com.netflix.graphql.dgs</groupId>
-            <artifactId>graphql-dgs-extended-scalars</artifactId>
-        </dependency>        
-
         <dependency>
             <groupId>com.example.tamagochi</groupId>
             <artifactId>tamagochi-api-contract</artifactId>
-            <version>1.0</version>
-        </dependency>
-
-        <!-- Spring AMQP — интеграция с RabbitMQ для публикации доменных событий -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-amqp</artifactId>
-        </dependency>
-
-        <!-- Контракт доменных событий — общий между publisher и consumer -->
-        <dependency>
-            <groupId>com.example.tamagochi</groupId>
-            <artifactId>tamagochis-events-contract</artifactId>
             <version>1.0</version>
         </dependency>
 
@@ -129,7 +96,7 @@
                 <version>1.7.1</version>
             </extension>
         </extensions>
-        <plugins>            
+        <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -137,6 +104,80 @@
                     <parameters>true</parameters>
                 </configuration>
             </plugin>
+
+            <!-- Frontend Build Plugin -->
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.15.0</version>
+                <configuration>
+                    <workingDirectory>../tamagochi-frontend</workingDirectory>
+                    <installDirectory>../tamagochi-frontend</installDirectory>
+                </configuration>
+                <executions>
+                    <!-- Install Node and npm -->
+                    <execution>
+                        <id>install node and npm</id>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <nodeVersion>v20.11.0</nodeVersion>
+                            <npmVersion>10.2.4</npmVersion>
+                        </configuration>
+                    </execution>
+
+                    <!-- npm install -->
+                    <execution>
+                        <id>npm install</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <arguments>install</arguments>
+                        </configuration>
+                    </execution>
+
+                    <!-- npm run build -->
+                    <execution>
+                        <id>npm build</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <arguments>run build</arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Copy frontend build to static folder -->
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-frontend-build</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/classes/static</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>../tamagochi-frontend/dist</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

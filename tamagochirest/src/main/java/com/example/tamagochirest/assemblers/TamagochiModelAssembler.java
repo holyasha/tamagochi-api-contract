@@ -18,7 +18,7 @@ public class TamagochiModelAssembler implements RepresentationModelAssembler<Tam
     public EntityModel<TamagochiResponse> toModel(TamagochiResponse tamagochi) {
         EntityModel<TamagochiResponse> model = EntityModel.of(tamagochi,
             linkTo(methodOn(TamagochiController.class).getTamagochiById(tamagochi.getId())).withSelfRel(),
-            linkTo(methodOn(TamagochiController.class).getAllTamagochis(null, null, null, null, null, 0, 20)).withRel("collection")
+            linkTo(methodOn(TamagochiController.class).getAllTamagochis(null, null, null, null, null, null, 0, 20)).withRel("collection")
         );
         if(tamagochi.getOwner() != null) {
             model.add(linkTo(methodOn(OwnerContoller.class)

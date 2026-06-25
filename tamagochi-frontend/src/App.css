@@ -1,0 +1,176 @@
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-content {
+  flex: 1;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.page-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Cards */
+.items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.item-card {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s;
+}
+
+.item-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.item-card.inactive {
+  opacity: 0.6;
+  border: 2px solid #ff6b6b;
+}
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 15px;
+}
+
+.item-name {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.status-badge {
+  padding: 5px 12px;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.status-badge.active {
+  background: #51cf66;
+  color: white;
+}
+
+.status-badge.inactive {
+  background: #ff6b6b;
+  color: white;
+}
+
+.item-details {
+  margin-bottom: 15px;
+}
+
+.item-property {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.property-label {
+  font-weight: 600;
+  color: #666;
+}
+
+.property-value {
+  color: #333;
+}
+
+.item-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  flex-wrap: wrap;
+}
+
+/* Buttons */
+.action-button {
+  flex: 1;
+  min-width: 100px;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.toggle-button {
+  background: #51cf66;
+  color: white;
+}
+
+.toggle-button:hover {
+  background: #40c057;
+}
+
+.toggle-button.deactivate {
+  background: #ff6b6b;
+}
+
+.toggle-button.deactivate:hover {
+  background: #ff5252;
+}
+
+.delete-button {
+  background: #495057;
+  color: white;
+}
+
+.delete-button:hover {
+  background: #343a40;
+}
+
+.edit-button {
+  background: #667eea;
+  color: white;
+}
+
+.edit-button:hover {
+  background: #5568d3;
+}
+
+/* Loading and Error */
+.loading {
+  text-align: center;
+  padding: 50px;
+  color: white;
+  font-size: 1.2rem;
+}
+
+.error {
+  background: #ff6b6b;
+  color: white;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .items-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page-content {
+    padding: 10px;
+  }
+}

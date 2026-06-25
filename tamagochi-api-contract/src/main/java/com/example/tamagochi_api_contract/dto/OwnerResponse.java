@@ -24,8 +24,17 @@ public class OwnerResponse extends RepresentationModel<OwnerResponse> {
     @Schema(description = "Имя пользователя", example = "Мегакрут")
     private final String name;
 
+    @Schema(description = "Игровой ник пользователя", example = "DragonSlayer2000")
+    private final String nickname;
+
+    @Schema(description = "Email пользователя", example = "user@example.com")
+    private final String email;
+
     @Schema(description = "Дата рождения пользователя", example = "2000-09-09")
     private final LocalDate birthDate;
+
+    @Schema(description = "Активность владельца", example = "true")
+    private final Boolean isActive;
 
     @Schema(description = "Общее количество питомцев у пользователя", example = "3")
     private final Integer tamagochisCount;

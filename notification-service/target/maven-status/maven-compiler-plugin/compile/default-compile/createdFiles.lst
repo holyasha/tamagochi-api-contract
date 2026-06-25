@@ -1,6 +1,0 @@
-com\example\tamagochi\notificationservice\config\RabbitMQConfig.class
-com\example\tamagochi\notificationservice\NotificationServiceApplication.class
-com\example\tamagochi\notificationservice\config\WebSocketConfig.class
-com\example\tamagochi\notificationservice\listener\EventNotificationListener$NotificationPayload.class
-com\example\tamagochi\notificationservice\listener\EventNotificationListener.class
-com\example\tamagochi\notificationservice\websocket\NotificationWebSocketHandler.class

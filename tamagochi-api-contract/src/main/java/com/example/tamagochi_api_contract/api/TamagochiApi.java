@@ -65,6 +65,7 @@ public interface TamagochiApi {
             @Parameter(description = "Фильтр по виду питомца", example = "Кошка") @RequestParam(required = false) String species,
             @Parameter(description = "Поиск по имени (substring, case-insensitive)", example = "Чупеп") @RequestParam(required = false) String nameSearch,
             @Parameter(description = "Поиск по дате рождения питомца", example = "2026-10-1")@RequestParam(required = false) LocalDate birthDate,
+            @Parameter(description = "Фильтр по активности (true - активные, false - неактивные, null - все)", example = "true") @RequestParam(required = false) Boolean isActive,
             @Parameter(description = "Номер страницы (0..N)", example = "0") @RequestParam(defaultValue = "0") int page,
             @Parameter(description = "Размер страницы", example = "20") @RequestParam(defaultValue = "20") int size
     );
@@ -129,6 +130,28 @@ public interface TamagochiApi {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteTamagochi(
             @Parameter(description = "ID питомца", required = true, example = "1") @PathVariable Long id
+    );
+
+    @Operation(
+            summary = "Поиск питомцев",
+            description = "Поиск питомцев по различным критериям с поддержкой пагинации",
+            security = @SecurityRequirement(name = TamagochisApiContractConfig.SECURITY_SCHEME_BEARER)
+    )
+    @ApiResponse(responseCode = "200", description = "Результаты поиска")
+    @GetMapping("/search")
+    PagedModel<EntityModel<TamagochiResponse>> searchTamagochis(
+            @Parameter(description = "Поиск по имени (substring, case-insensitive)", example = "Чупеп")
+            @RequestParam(required = false) String name,
+            @Parameter(description = "Фильтр по ID владельца") @RequestParam(required = false) Long ownerId,
+            @Parameter(description = "Фильтр по цвету", example = "Серый") @RequestParam(required = false) String color,
+            @Parameter(description = "Фильтр по виду питомца", example = "Кошка") @RequestParam(required = false) String species,
+            @Parameter(description = "Поиск по дате рождения питомца", example = "2026-10-1") @RequestParam(required = false) LocalDate birthDate,
+            @Parameter(description = "Фильтр по активности (true - живые, false - мертвые, null - все)", example = "true")
+            @RequestParam(required = false) Boolean isAlive,
+            @Parameter(description = "Номер страницы (0..N)", example = "0")
+            @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Размер страницы", example = "20")
+            @RequestParam(defaultValue = "20") int size
     );
 }
 

@@ -1,0 +1,32 @@
+.filter-group {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.filter-label {
+  font-weight: bold;
+  color: #333;
+}
+
+.filter-button {
+  padding: 10px 20px;
+  border: 2px solid #667eea;
+  background: white;
+  color: #667eea;
+  cursor: pointer;
+  border-radius: 20px;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.filter-button:hover {
+  background: #f0f0f0;
+}
+
+.filter-button.active {
+  background: #667eea;
+  color: white;
+}

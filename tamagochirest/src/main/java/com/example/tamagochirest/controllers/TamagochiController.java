@@ -43,8 +43,8 @@ public class TamagochiController implements TamagochiApi{
 
     @Override
     public PagedModel<EntityModel<TamagochiResponse>> getAllTamagochis(Long ownerId, String color, String species,
-            String nameSearch, LocalDate birthDate, int page, int size) {
-        PagedResponse<TamagochiResponse> paged = tamagochiService.findAllTamagochis(ownerId, species, color, nameSearch, birthDate, page, size);
+            String nameSearch, LocalDate birthDate, Boolean isActive, int page, int size) {
+        PagedResponse<TamagochiResponse> paged = tamagochiService.findAllTamagochis(ownerId, species, color, nameSearch, birthDate, isActive, page, size);
         Page<TamagochiResponse> springPage = new PageImpl<>(
                 paged.content(),
                 PageRequest.of(paged.pageNumber(), paged.pageSize()),
@@ -74,10 +74,21 @@ public class TamagochiController implements TamagochiApi{
 
     @Override
     public void deleteTamagochi(Long id) {
-        tamagochiService.deleteTamagochi(id);        
+        tamagochiService.deleteTamagochi(id);
     }
 
-    
-    
-    
+    @Override
+    public PagedModel<EntityModel<TamagochiResponse>> searchTamagochis(String name, Long ownerId, String color, String species, LocalDate birthDate, Boolean isAlive, int page, int size) {
+        PagedResponse<TamagochiResponse> paged = tamagochiService.findAllTamagochis(ownerId, species, color, name, birthDate, isAlive, page, size);
+        Page<TamagochiResponse> springPage = new PageImpl<>(
+                paged.content(),
+                PageRequest.of(paged.pageNumber(), paged.pageSize()),
+                paged.totalElements()
+        );
+        return pagedResourcesAssembler.toModel(springPage, tamagochiModelAssembler);
+    }
+
+
+
+
 }

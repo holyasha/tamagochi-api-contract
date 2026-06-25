@@ -16,21 +16,17 @@ import com.example.tamagochi_api_contract.dto.TamagochiResponse;
 import com.example.tamagochi_api_contract.dto.UpdateTamagochiRequest;
 import com.example.tamagochi_api_contract.exeption.ResourceNotFoundException;
 import com.example.tamagochirest.storage.InMemoryStorage;
-import com.example.tamagochirest.event.TamagochiEventPublisher;
 
 @Component
 public class TamagochiService {
 
     private final InMemoryStorage storage;
     private final OwnerService ownerService;
-    private final TamagochiEventPublisher eventPublisher;
 
     public TamagochiService(InMemoryStorage storage,
-                           OwnerService ownerService,
-                           TamagochiEventPublisher eventPublisher) {
+                           OwnerService ownerService) {
         this.storage = storage;
         this.ownerService = ownerService;
-        this.eventPublisher = eventPublisher;
     }
 
     public TamagochiResponse findTamagochiById(Long id) {
@@ -43,6 +39,7 @@ public class TamagochiService {
                                               String color,
                                               String nameSearch,
                                               LocalDate birthDate,
+                                              Boolean isActive,
                                               int page,
                                               int size) {
 
@@ -67,6 +64,11 @@ public class TamagochiService {
         if (birthDate != null) {
             stream = stream.filter(p ->
                 birthDate.equals(p.getBirthDate())
+            );
+        }
+        if (isActive != null) {
+            stream = stream.filter(p ->
+                isActive.equals(p.getIsActive())
             );
         }
         if (nameSearch != null && !nameSearch.isBlank()) {
@@ -101,38 +103,37 @@ public class TamagochiService {
             .energy(100)
             .clearliness(100)
             .isAlive(true)
+            .isActive(request.isActive() != null ? request.isActive() : true)
             .birthDate(request.birthDate())
             .createdAt(OffsetDateTime.now())
             .build();
         storage.tamagochis.put(id, tamagochi);
-
-        // Публикуем доменное событие ПОСЛЕ успешного сохранения.
-        // Если RabbitMQ недоступен — тамагочи всё равно создан, событие просто потеряется.
-        eventPublisher.publishCreated(tamagochi);
 
         return tamagochi;
     }
 
     public TamagochiResponse updaTamagochi(Long id, UpdateTamagochiRequest request) {
         TamagochiResponse existing = findTamagochiById(id);
+        OwnerResponse owner = ownerService.findById(request.ownerId());
+
         TamagochiResponse updated = TamagochiResponse.builder()
             .id(id)
             .name(request.name())
             .species(request.species())
             .color(request.color())
-            .owner(existing.getOwner())
+            .owner(owner)
             .birthDate(request.birthDate())
-            .happiness(existing.getHappiness())
-            .health(existing.getHealth())
-            .hunger(existing.getHunger())
-            .energy(existing.getEnergy())
-            .clearliness(existing.getClearliness())
+            .happiness(request.happiness())
+            .health(request.health())
+            .hunger(request.hunger())
+            .energy(request.energy())
+            .clearliness(request.clearliness())
             .isAlive(existing.getIsAlive())
+            .isActive(request.isActive() != null ? request.isActive() : existing.getIsActive())
             .createdAt(existing.getCreatedAt())
             .updatedAt(OffsetDateTime.now())
             .build();
         storage.tamagochis.put(id, updated);
-        eventPublisher.publishUpdated(updated);
         return updated;
     }
 
@@ -151,18 +152,17 @@ public class TamagochiService {
             .energy(existing.getEnergy())
             .clearliness(existing.getClearliness())
             .isAlive(existing.getIsAlive())
+            .isActive(request.isActive() != null ? request.isActive() : existing.getIsActive())
             .createdAt(existing.getCreatedAt())
             .updatedAt(OffsetDateTime.now())
             .build();
         storage.tamagochis.put(id, updated);
-        eventPublisher.publishUpdated(updated);
         return updated;
     }
 
     public void deleteTamagochi(Long id) {
         TamagochiResponse tamagochi = findTamagochiById(id);
         storage.tamagochis.remove(id);
-        eventPublisher.publishDeleted(id, tamagochi.getName(), "Удалён владельцем");
     }
 
     public void deleteTamagochisByOwnerId(Long ownerId) {

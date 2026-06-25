@@ -1,5 +1,0 @@
-com\example\tamagochi\grpcenrichment\GrpcEnrichmentClientApplication.class
-com\example\tamagochi\grpcenrichment\config\GrpcClientConfig.class
-com\example\tamagochi\grpcenrichment\listener\TamagochiCreatedListener.class
-com\example\tamagochi\grpcenrichment\publisher\EnrichmentEventPublisher.class
-com\example\tamagochi\grpcenrichment\config\RabbitMQConfig.class

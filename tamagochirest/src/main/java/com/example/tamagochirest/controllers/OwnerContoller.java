@@ -42,8 +42,8 @@ public class OwnerContoller implements OwnerApi {
     }
 
     @Override
-    public PagedModel<EntityModel<OwnerResponse>> getAllOwners(int page, int size) {
-        PagedResponse<OwnerResponse> paged = ownerService.findAll(page, size);
+    public PagedModel<EntityModel<OwnerResponse>> getAllOwners(String nameSearch, String emailSearch, Boolean isActive, int page, int size) {
+        PagedResponse<OwnerResponse> paged = ownerService.findAll(nameSearch, emailSearch, null, null, null, isActive, page, size);
         Page<OwnerResponse> springPage = new PageImpl<>(
             paged.content(),
             PageRequest.of(paged.pageNumber(), paged.pageSize()),
@@ -85,7 +85,7 @@ public class OwnerContoller implements OwnerApi {
     public PagedModel<EntityModel<TamagochiResponse>> getTamagochisByOwner(Long id, int page, int size) {
         // Проверяем что владелец существует (выбросит 404 если нет)
         ownerService.findById(id);
-        PagedResponse<TamagochiResponse> paged = tamagotchiService.findAllTamagochis(id, null, null, null, null, page, size);
+        PagedResponse<TamagochiResponse> paged = tamagotchiService.findAllTamagochis(id, null, null, null, null, null, page, size);
         Page<TamagochiResponse> springPage = new PageImpl<>(
             paged.content(),
             PageRequest.of(paged.pageNumber(), paged.pageSize()),
@@ -93,7 +93,18 @@ public class OwnerContoller implements OwnerApi {
         );
         return pagedTamagochisAssembler.toModel(springPage, tamagochiModelAssembler);
     }
-    
-    
-    
+
+    @Override
+    public PagedModel<EntityModel<OwnerResponse>> searchOwners(String name, String email, Boolean isActive, int page, int size) {
+        PagedResponse<OwnerResponse> paged = ownerService.findAll(name, email, null, null, null, isActive, page, size);
+        Page<OwnerResponse> springPage = new PageImpl<>(
+            paged.content(),
+            PageRequest.of(paged.pageNumber(), paged.pageSize()),
+            paged.totalElements()
+        );
+        return pagedOwnersAssembler.toModel(springPage, ownerModelAssembler);
+    }
+
+
+
 }

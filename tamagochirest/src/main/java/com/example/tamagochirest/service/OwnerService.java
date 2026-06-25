@@ -9,7 +9,6 @@ import com.example.tamagochi_api_contract.dto.PagedResponse;
 import com.example.tamagochi_api_contract.dto.PatchOwnerRequest;
 import com.example.tamagochi_api_contract.exeption.ResourceNotFoundException;
 import com.example.tamagochirest.storage.InMemoryStorage;
-import com.example.tamagochirest.event.OwnerEventPublisher;
 
 import java.util.Comparator;
 import java.util.List;
@@ -20,18 +19,23 @@ public class OwnerService {
 
     private final InMemoryStorage storage;
     private final TamagochiService tamagotchiService;
-    private final OwnerEventPublisher eventPublisher;
 
     public OwnerService(InMemoryStorage storage,
-                       @Lazy TamagochiService tamagotchiService,
-                       OwnerEventPublisher eventPublisher) {
+                       @Lazy TamagochiService tamagotchiService) {
         this.storage = storage;
         this.tamagotchiService = tamagotchiService;
-        this.eventPublisher = eventPublisher;
     }
 
-    public PagedResponse<OwnerResponse> findAll(int page, int size) {
+    public PagedResponse<OwnerResponse> findAll(String nameSearch, String emailSearch, String nicknameSearch,
+                                                 java.time.LocalDate birthDate, Integer tamagochisCount,
+                                                 Boolean isActive, int page, int size) {
         List <OwnerResponse> all = storage.owners.values().stream()
+                .filter(owner -> isActive == null || isActive.equals(owner.getIsActive()))
+                .filter(owner -> nameSearch == null || owner.getName().toLowerCase().contains(nameSearch.toLowerCase()))
+                .filter(owner -> emailSearch == null || (owner.getEmail() != null && owner.getEmail().toLowerCase().contains(emailSearch.toLowerCase())))
+                .filter(owner -> nicknameSearch == null || (owner.getNickname() != null && owner.getNickname().toLowerCase().contains(nicknameSearch.toLowerCase())))
+                .filter(owner -> birthDate == null || birthDate.equals(owner.getBirthDate()))
+                .filter(owner -> tamagochisCount == null || (owner.getTamagochisCount() != null && owner.getTamagochisCount().equals(tamagochisCount)))
                 .sorted(Comparator.comparingLong(OwnerResponse::getId)).toList();
         int totalElements = all.size();
         int totalPages = size > 0 ? (int) Math.ceil((double) totalElements / size) : 1;
@@ -51,11 +55,13 @@ public class OwnerService {
         OwnerResponse owner = OwnerResponse.builder()
             .id(id)
             .name(request.name())
+            .nickname(request.nickname())
+            .email(request.email())
             .birthDate(request.birthDate())
+            .isActive(request.isActive() != null ? request.isActive() : true)
             .tamagochisCount(0)
             .build();
         storage.owners.put(id, owner);
-        eventPublisher.publishCreated(owner);
         return owner;
     }
 
@@ -64,7 +70,10 @@ public class OwnerService {
         OwnerResponse updatedOwner = OwnerResponse.builder()
                 .id(id)
                 .name(request.name())
+                .nickname(request.nickname())
+                .email(request.email())
                 .birthDate(request.birthDate())
+                .isActive(request.isActive() != null ? request.isActive() : existing.getIsActive())
                 .tamagochisCount(existing.getTamagochisCount())
                 .build();
         storage.owners.put(id, updatedOwner);
@@ -77,7 +86,10 @@ public class OwnerService {
         OwnerResponse updated = OwnerResponse.builder()
                 .id(id)
                 .name(newName)
+                .nickname(request.nickname() != null ? request.nickname() : existing.getNickname())
+                .email(request.email() != null ? request.email() : existing.getEmail())
                 .birthDate(request.birthDate() != null ? request.birthDate() : existing.getBirthDate())
+                .isActive(request.isActive() != null ? request.isActive() : existing.getIsActive())
                 .tamagochisCount(existing.getTamagochisCount())
                 .build();
         storage.owners.put(id, updated);
@@ -91,6 +103,5 @@ public class OwnerService {
                 .count();
         tamagotchiService.deleteTamagochisByOwnerId(id);
         storage.owners.remove(id);
-        eventPublisher.publishDeleted(owner, deletedTamagochisCount);
     }
 }

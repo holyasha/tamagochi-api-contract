@@ -25,5 +25,8 @@ public record PatchTamagochiRequest(
 
     @Schema(description = "Дата рождения питомца", example = "2000-04-18", requiredMode = Schema.RequiredMode.REQUIRED)
     @Past(message = "Дата рождения должна быть в прошлом")
-    LocalDate birthDate
+    LocalDate birthDate,
+
+    @Schema(description = "Активность питомца", example = "true")
+    Boolean isActive
 ) {}
