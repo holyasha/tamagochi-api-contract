@@ -39,6 +39,7 @@ function CreateOwnerForm({ onCreate }) {
             type="text"
             value={formData.name}
             onChange={(e) => handleChange('name', e.target.value)}
+            placeholder='Введите имя'
             required
           />
         </div>
@@ -48,6 +49,7 @@ function CreateOwnerForm({ onCreate }) {
             type="text"
             value={formData.nickname}
             onChange={(e) => handleChange('nickname', e.target.value)}
+            placeholder='Введите ник'
           />
         </div>
         <div className="form-field">
@@ -56,6 +58,7 @@ function CreateOwnerForm({ onCreate }) {
             type="email"
             value={formData.email}
             onChange={(e) => handleChange('email', e.target.value)}
+            placeholder='Введите email'
           />
         </div>
         <div className="form-field">

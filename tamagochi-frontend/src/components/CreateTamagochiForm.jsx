@@ -42,6 +42,7 @@ function CreateTamagochiForm({ onCreate }) {
             type="text"
             value={formData.name}
             onChange={(e) => handleChange('name', e.target.value)}
+            placeholder='Введите имя'
             required
           />
         </div>
@@ -66,6 +67,7 @@ function CreateTamagochiForm({ onCreate }) {
             type="text"
             value={formData.color}
             onChange={(e) => handleChange('color', e.target.value)}
+            placeholder='Введите цвет'
             required
           />
         </div>
@@ -84,6 +86,7 @@ function CreateTamagochiForm({ onCreate }) {
             type="number"
             value={formData.ownerId}
             onChange={(e) => handleChange('ownerId', e.target.value)}
+            placeholder='Введите id владельца'
             min="1"
             required
           />

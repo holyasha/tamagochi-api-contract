@@ -6,7 +6,7 @@ function Header() {
     <header className="app-header">
       <div className="header-content">
         <h1 className="app-title">Tamagochi Management System</h1>
-        <p className="app-subtitle">Управление питомцами и владельцами</p>
+        <p className="app-subtitle">Тамагочи и их владельцы</p>
         <nav className="app-nav">
           <NavLink to="/tamagochis" className="nav-link">
             Питомцы
